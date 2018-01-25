@@ -102,7 +102,7 @@ def plot_density(density_grid, left, right, bottom, top,
     return None
 
 
-def numerical_kl_div(p, q, bin_area):
+def kullback_leibler_divergence(p, q, bin_area):
     assert p.shape == q.shape, "p and q must have the same shape"
     assert p.ndim == 2, "p must be 2d array"
 
@@ -122,4 +122,8 @@ def numerical_kl_div(p, q, bin_area):
 
     return total * bin_area
 
+def jensen_shannon_divergence(p, q, bin_area):
+    m = 0.5 * (p + q)
+    jsd = 0.5 * kullback_leibler_divergence(p, m, bin_area) + 0.5 * kullback_leibler_divergence(q, m, bin_area)
+    return jsd 
 
