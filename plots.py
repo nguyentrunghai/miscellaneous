@@ -3,7 +3,8 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-import matplotlib.cm
+from matplotlib import ticker
+import seaborn as sns
 
 # see http://matplotlib.org/api/markers_api.html
 MARKERS = [".", ",", "o", "v", "^", "<", ">", "1", "2", "3", "4", "8", "s", "p", "*", "h", "H", "+", "x", "D", "d", "|", "_"]
@@ -94,4 +95,73 @@ def plot_lines(xs, ys, xerrs=None, yerrs=None,
     plt.tight_layout()
     plt.savefig(out, dpi=dpi)
     return None
+
+
+
+def plot_density(density_grid, left, right, bottom, top, 
+                xlabel, ylabel, out,
+                nticks=7):
+    """
+    """
+    figure_size = (3.2, 3.2*6/8)
+    dpi = 300
+    fontsize = 8
+    markersize = 8
+    font = { "fontname": "Arial"}
+
+    plt.figure(figsize=figure_size)
+
+    # for more colormaps see http://matplotlib.org/examples/color/colormaps_reference.html
+    my_cmap = plt.get_cmap('hot')
+
+    plt.imshow(density_grid, cmap=my_cmap, interpolation='nearest', origin='lower',
+                extent=(left, right, bottom, top))
+
+    ax = plt.axes()
+    cbar = plt.colorbar(fraction=0.046, pad=0.04)
+
+    for tick in ax.xaxis.get_major_ticks():
+        tick.label.set_fontsize(fontsize)
+
+    for tick in ax.yaxis.get_major_ticks():
+        tick.label.set_fontsize(fontsize)
+
+    ax.locator_params(axis='x', nbins=nticks)
+    ax.locator_params(axis='y', nbins=nticks)
+
+    cbar.locator = ticker.MaxNLocator(nbins=nticks)
+    cbar.update_ticks()
+    cbar.ax.tick_params(labelsize=fontsize)
+
+    plt.xlabel(xlabel, fontsize=fontsize, **font)
+    plt.ylabel(ylabel, fontsize=fontsize, **font)
+
+    plt.tight_layout()
+    plt.savefig(out, dpi=dpi)
+    return None
+
+
+
+def annotated_heat_map(dataframe, out):
+    """
+    """
+    figure_size=(6.4, 6.4)
+    dpi=300
+    sns.set(font_scale=1)
+
+    plt.figure(figsize=figure_size)
+    my_cmap = plt.get_cmap('Reds')
+
+    ax = plt.axes()
+    sns.heatmap(dataframe, annot=True, fmt=".2f", linewidths=.5,  ax=ax, cmap=my_cmap)                               
+    
+    row_names = list(dataframe.index)
+    col_names = list(dataframe.columns)
+
+    ax.set_yticklabels(row_names, rotation=0)
+    ax.set_xticklabels(col_names, rotation=45)
+
+    plt.tight_layout()
+    plt.savefig(out, dpi=dpi)
+    return
 
