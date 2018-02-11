@@ -1,4 +1,4 @@
-
+" copied from some body
 " colors
 colorscheme badwolf         " awesome colorscheme
 "colorscheme github
