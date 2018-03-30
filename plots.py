@@ -99,7 +99,7 @@ def plot_lines(xs, ys, xerrs=None, yerrs=None,
 
 
 def plot_density(density_grid, left, right, bottom, top, 
-                xlabel, ylabel, out,
+                xlabel, ylabel, zlabel, out,
                 nticks=7):
     """
     """
@@ -132,6 +132,7 @@ def plot_density(density_grid, left, right, bottom, top,
     cbar.locator = ticker.MaxNLocator(nbins=nticks)
     cbar.update_ticks()
     cbar.ax.tick_params(labelsize=fontsize)
+    cbar.set_label(zlabel, fontsize=fontsize, **font)
 
     plt.xlabel(xlabel, fontsize=fontsize, **font)
     plt.ylabel(ylabel, fontsize=fontsize, **font)
